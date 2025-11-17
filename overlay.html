@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: "Segoe UI", sans-serif;
+      background: transparent;
+    }
+
+    .ticker-container {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: linear-gradient(90deg, #1f1f1f, #333);
+      padding: 8px 0;
+      overflow: hidden;
+    }
+
+    .ticker-text {
+      white-space: nowrap;
+      font-size: 26px;
+      color: white;
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll 18s linear infinite;
+    }
+
+    @keyframes scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-100%); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ticker-container">
+    <div id="ticker" class="ticker-text">Cargando...</div>
+  </div>
+
+  <script>
+    async function cargarTexto() {
+      try {
+        const res = await fetch("texto.txt?cache=" + Date.now());
+        const contenido = await res.text();
+        document.getElementById("ticker").textContent = contenido.trim();
+      } catch (e) {
+        console.log("Error cargando texto:", e);
+      }
+    }
+
+    cargarTexto();
+    setInterval(cargarTexto, 5000); // se actualiza cada 5 segundos
+  </script>
+
+</body>
+</html>
